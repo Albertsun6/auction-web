@@ -1,42 +1,52 @@
 import { useMemo } from 'react'
-import { filterItems, calculateTotalQty } from '../utils/filter'
+import { filterItems, calculateTotalQty, applyAdvancedFilter } from '../features/search'
 import { isBidValue, parseBidValue } from '../utils/bidStatus'
 
 /**
  * 处理拍卖列表的过滤与统计逻辑
  * @param {Object} params
  * @param {Array} params.itemsWithBids - 合并出价/关注后的数据
- * @param {string} params.keywordLeft
- * @param {string} params.keywordRight
+ * @param {string} params.keyword - 搜索关键词
  * @param {string} params.selectedSupplier
  * @param {string[]} params.selectedGrade
  * @param {string[]} params.selectedBidStatus
  * @param {boolean} params.followOnly
  * @param {Object} params.followedIds
  * @param {Object} params.followedIdsSnapshot - 只看关注模式下的快照（用于软删除效果）
+ * @param {Array} params.advancedConditions - 高级搜索条件
+ * @param {boolean} params.advancedSearchEnabled - 高级搜索是否启用
  */
 export function useAuctionFilters({
   itemsWithBids,
-  keywordLeft,
-  keywordRight,
+  keyword,
   selectedSupplier,
   selectedGrade,
   selectedBidStatus,
   followOnly,
   followedIds,
   followedIdsSnapshot,
+  advancedConditions = [],
+  advancedSearchEnabled = false,
 }) {
-  // 搜索过滤
+  // 快速搜索过滤（单关键词）
   const searchFiltered = useMemo(
-    () => filterItems(itemsWithBids, keywordLeft, keywordRight),
-    [itemsWithBids, keywordLeft, keywordRight]
+    () => filterItems(itemsWithBids, keyword),
+    [itemsWithBids, keyword]
   )
+
+  // 高级搜索过滤
+  const advancedFiltered = useMemo(() => {
+    if (!advancedSearchEnabled || !advancedConditions.length) {
+      return searchFiltered
+    }
+    return applyAdvancedFilter(searchFiltered, advancedConditions)
+  }, [searchFiltered, advancedConditions, advancedSearchEnabled])
 
   // 供应商过滤
   const supplierFiltered = useMemo(() => {
-    if (!selectedSupplier) return searchFiltered
-    return searchFiltered.filter((item) => item.supplier === selectedSupplier)
-  }, [searchFiltered, selectedSupplier])
+    if (!selectedSupplier) return advancedFiltered
+    return advancedFiltered.filter((item) => item.supplier === selectedSupplier)
+  }, [advancedFiltered, selectedSupplier])
 
   // 成色过滤（多选，空=全部）
   const gradeFiltered = useMemo(() => {
@@ -63,7 +73,7 @@ export function useAuctionFilters({
     return bidFiltered.filter((item) => !!idsForFilter[item.id])
   }, [bidFiltered, followOnly, followedIds, followedIdsSnapshot])
 
-  // 统计
+  // 统计：基于快速搜索后的结果
   const supplierCounts = useMemo(() => {
     const counts = {}
     searchFiltered.forEach((item) => {
@@ -80,13 +90,14 @@ export function useAuctionFilters({
     return qtyCounts
   }, [searchFiltered])
 
+  // 可用成色：基于高级搜索后的结果
   const availableGrades = useMemo(() => {
     const grades = new Set()
-    searchFiltered.forEach((item) => {
+    advancedFiltered.forEach((item) => {
       if (item.grade) grades.add(item.grade)
     })
     return Array.from(grades).sort()
-  }, [searchFiltered])
+  }, [advancedFiltered])
 
   const gradeCounts = useMemo(() => {
     const counts = {}
@@ -136,6 +147,7 @@ export function useAuctionFilters({
 
   return {
     searchFiltered,
+    advancedFiltered,
     supplierFiltered,
     gradeFiltered,
     filteredData: bidFiltered,

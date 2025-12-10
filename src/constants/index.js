@@ -56,5 +56,6 @@ export const STORAGE_KEYS = {
   VISIBLE_KEYS: 'auction_visible_keys',
   BID_RECORDS: 'auction_bid_records',
   FOLLOWED_IDS: 'auction_followed_ids',
+  SAVED_SEARCHES: 'auction_saved_searches',
 }
 

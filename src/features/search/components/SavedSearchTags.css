@@ -1,0 +1,44 @@
+/* 已保存的搜索条件标签行 */
+.saved-searches-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding: 8px 0;
+}
+
+.saved-searches-label {
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.saved-searches-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.saved-search-tag {
+  cursor: pointer;
+  transition: all 0.2s;
+  margin: 0;
+  padding: 2px 8px;
+  font-size: 13px;
+}
+
+.saved-search-tag:hover {
+  border-color: #1677ff;
+  color: #1677ff;
+}
+
+.saved-search-tag.active {
+  background: #e6f4ff;
+  border-color: #1677ff;
+  color: #1677ff;
+}
+
+.saved-search-tag .anticon-close {
+  font-size: 10px;
+  margin-left: 4px;
+}
+

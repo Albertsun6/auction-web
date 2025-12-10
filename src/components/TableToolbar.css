@@ -1,5 +1,8 @@
-.table-toolbar {
+.table-toolbar-wrapper {
   margin: 12px 0 8px;
+}
+
+.table-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -28,9 +31,35 @@
 }
 
 .table-toolbar .ant-input-search {
-  min-width: 180px;
-  max-width: 280px;
+  min-width: 260px;
+  max-width: 360px;
   flex: 1;
+}
+
+/* 高级搜索按钮样式 */
+.table-toolbar .has-active-conditions {
+  border-color: #1677ff;
+  color: #1677ff;
+}
+
+.condition-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  margin-left: 6px;
+  font-size: 12px;
+  line-height: 1;
+  background: #1677ff;
+  color: #fff;
+  border-radius: 9px;
+}
+
+.has-active-conditions .condition-badge {
+  background: #fff;
+  color: #1677ff;
 }
 
 @media (max-width: 768px) {
@@ -40,9 +69,9 @@
   }
   
   .table-toolbar .ant-input-search {
-    min-width: 140px;
+    min-width: 200px;
     max-width: 100%;
-    flex: 1 1 45%;
+    flex: 1 1 100%;
   }
 
   .table-toolbar-actions {
@@ -84,4 +113,3 @@
 .column-checkbox-item.required {
   font-weight: 600;
 }
-

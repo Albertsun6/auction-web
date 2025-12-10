@@ -8,7 +8,7 @@ import ResizableTable from '../components/ResizableTable'
 import { DEFAULT_ITEMS, DEFAULT_VISIBLE_KEYS } from '../constants'
 import { SUPPLIERS, SUPPLIER_LOGO, BID_STATUS_OPTIONS } from '../constants/filters'
 import { readVisibleKeys, writeVisibleKeys, readBidRecords, writeBidRecords, readFollowedIds, writeFollowedIds } from '../services/storageService'
-import { calculateTotalQty } from '../utils/filter'
+import { calculateTotalQty, useAdvancedSearch } from '../features/search'
 import { hasActiveBid as checkActiveBid, isBidValue, parseBidValue, mergeBidToItem } from '../utils/bidStatus'
 import { useAuctionFilters } from '../hooks/useAuctionFilters'
 import '../App.css'
@@ -17,11 +17,26 @@ const { Header, Content } = Layout
 const { Text } = Typography
 
 function ListPage() {
-  // 从本地存储恢复配置，如果没有则使用默认值
-  const [keywordLeft, setKeywordLeft] = useState('')
-  const [keywordRight, setKeywordRight] = useState('')
-  const deferredKeywordLeft = useDeferredValue(keywordLeft)
-  const deferredKeywordRight = useDeferredValue(keywordRight)
+  // 搜索关键词（单个搜索框）
+  const [keyword, setKeyword] = useState('')
+  const deferredKeyword = useDeferredValue(keyword)
+  
+  // 高级搜索
+  const {
+    isExpanded: advancedSearchExpanded,
+    conditions: advancedConditions,
+    hasActiveConditions,
+    savedSearches,
+    activeSearchId,
+    isDirty: isAdvancedSearchDirty,
+    initNewSearch,
+    updateConditions: setAdvancedConditions,
+    saveCurrentSearch,
+    loadSavedSearch,
+    deleteSavedSearch,
+    clearAndClose: closeAdvancedSearch,
+  } = useAdvancedSearch()
+
   const [bidInputs, setBidInputs] = useState({})
   const [followOnly, setFollowOnly] = useState(false)
   const [bidRecords, setBidRecords] = useState(() => readBidRecords()) // { id: bidAmount }
@@ -47,15 +62,24 @@ function ListPage() {
     setSelectedRowKeys([])
   }, [])
 
-  const handleKeywordLeftChange = useCallback((value) => {
-    setKeywordLeft(value)
+  const handleKeywordChange = useCallback((value) => {
+    setKeyword(value)
     resetSelection()
   }, [resetSelection])
 
-  const handleKeywordRightChange = useCallback((value) => {
-    setKeywordRight(value)
+  // 初始化新建高级搜索
+  const handleInitNewSearch = useCallback(() => {
+    setKeyword('')
+    initNewSearch()
     resetSelection()
-  }, [resetSelection])
+  }, [initNewSearch, resetSelection])
+  
+  // 加载已保存搜索时也要清空普通搜索
+  const handleLoadSavedSearch = useCallback((id) => {
+    setKeyword('')
+    loadSavedSearch(id)
+    resetSelection()
+  }, [loadSavedSearch, resetSelection])
 
   const handleVisibleKeysChange = useCallback((keys) => {
     setVisibleKeys(keys)
@@ -637,6 +661,7 @@ function ListPage() {
 
   const {
     searchFiltered,
+    advancedFiltered,
     supplierFiltered,
     filteredData,
     followFilteredData,
@@ -649,14 +674,15 @@ function ListPage() {
     bidStatusQtyCounts,
   } = useAuctionFilters({
     itemsWithBids,
-    keywordLeft: deferredKeywordLeft,
-    keywordRight: deferredKeywordRight,
+    keyword: deferredKeyword,
     selectedSupplier,
     selectedGrade,
     selectedBidStatus,
     followOnly,
     followedIds,
     followedIdsSnapshot,
+    advancedConditions,
+    advancedSearchEnabled: advancedSearchExpanded,
   })
 
   // 计算统计数据
@@ -813,10 +839,8 @@ function ListPage() {
 
             <div className="table-panel">
               <TableToolbar
-                keywordLeft={keywordLeft}
-                keywordRight={keywordRight}
-                onKeywordLeftChange={handleKeywordLeftChange}
-                onKeywordRightChange={handleKeywordRightChange}
+                keyword={keyword}
+                onKeywordChange={handleKeywordChange}
                 visibleKeys={visibleKeys}
                 onVisibleKeysChange={handleVisibleKeysChange}
                 columnOptions={columnOptions}
@@ -829,6 +853,20 @@ function ListPage() {
                 onRefreshFollowList={handleRefreshFollowList}
                 hasUnfollowedItems={followOnly && followedIdsSnapshot && 
                   Object.keys(followedIdsSnapshot).some(id => followedIdsSnapshot[id] && !followedIds[id])}
+                advancedSearchExpanded={advancedSearchExpanded}
+                advancedConditions={advancedConditions}
+                onAdvancedConditionsChange={setAdvancedConditions}
+                availableGrades={availableGrades}
+                advancedMatchCount={advancedSearchExpanded ? advancedFiltered.length : undefined}
+                hasActiveConditions={hasActiveConditions}
+                savedSearches={savedSearches}
+                activeSearchId={activeSearchId}
+                onLoadSavedSearch={handleLoadSavedSearch}
+                onDeleteSavedSearch={deleteSavedSearch}
+                onSaveCurrentSearch={saveCurrentSearch}
+                onAdvancedSearchClose={closeAdvancedSearch}
+                onInitNewSearch={handleInitNewSearch}
+                isAdvancedSearchDirty={isAdvancedSearchDirty}
               />
 
               <ResizableTable

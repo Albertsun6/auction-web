@@ -18,3 +18,9 @@ export const readFollowedIds = () =>
 
 export const writeFollowedIds = (value) =>
   setStorage(STORAGE_KEYS.FOLLOWED_IDS, value)
+
+export const readSavedSearches = () =>
+  getStorage(STORAGE_KEYS.SAVED_SEARCHES, [])
+
+export const writeSavedSearches = (value) =>
+  setStorage(STORAGE_KEYS.SAVED_SEARCHES, value)

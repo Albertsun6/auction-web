@@ -1,0 +1,92 @@
+/* 高级搜索面板样式 */
+
+.advanced-search-panel {
+  background: #fafafa;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 12px;
+}
+
+.advanced-search-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.advanced-search-header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.advanced-search-close-btn {
+  color: #666;
+}
+
+.advanced-search-close-btn:hover {
+  color: #ff4d4f;
+  background: rgba(255, 77, 79, 0.06);
+}
+
+.advanced-search-hint {
+  font-size: 13px;
+}
+
+.advanced-search-count {
+  font-size: 13px;
+}
+
+.advanced-search-conditions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.condition-row {
+  display: flex;
+  align-items: center;
+  padding: 4px 0;
+}
+
+.condition-remove-btn {
+  color: #999;
+}
+
+.condition-remove-btn:hover:not(:disabled) {
+  color: #ff4d4f;
+}
+
+.condition-remove-btn:disabled {
+  color: #d9d9d9;
+  cursor: not-allowed;
+}
+
+.advanced-search-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px dashed #e8e8e8;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .advanced-search-panel {
+    padding: 12px;
+  }
+
+  .condition-row {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .condition-row .ant-select,
+  .condition-row .ant-input,
+  .condition-row .ant-input-number {
+    min-width: 120px;
+  }
+}
+
