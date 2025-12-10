@@ -92,8 +92,14 @@ function AdvancedSearch({
       message.warning('请输入策略名称')
       return false
     }
-    const success = onSaveCurrentSearch?.(name.trim(), id)
-    if (success) {
+    const result = onSaveCurrentSearch?.(name.trim(), id)
+    
+    // 处理返回结果
+    if (result?.error === 'duplicate') {
+      message.error('策略名称已存在，请使用其他名称')
+      return false
+    }
+    if (result?.success) {
       message.success(id ? '搜索策略已更新' : (activeSearchId ? '已另存为新策略' : '搜索策略保存成功'))
       if (closeAfter) onClose?.()
       return true

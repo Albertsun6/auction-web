@@ -77,7 +77,17 @@ export function useAdvancedSearch() {
 
   // 保存当前条件
   const saveCurrentSearch = useCallback((name, idToUpdate = null) => {
-    if (!name.trim() || !hasActiveConditions) return false
+    if (!name.trim() || !hasActiveConditions) return { success: false }
+
+    const trimmedName = name.trim()
+    
+    // 重名检查：检查是否存在同名策略（排除当前编辑的策略）
+    const isDuplicate = savedSearches.some(
+      s => s.name === trimmedName && s.id !== idToUpdate
+    )
+    if (isDuplicate) {
+      return { success: false, error: 'duplicate' }
+    }
 
     // 1. 如果指定了 ID 且存在，则更新
     if (idToUpdate) {
@@ -85,7 +95,7 @@ export function useAdvancedSearch() {
       if (index !== -1) {
         const updatedSearch = {
           ...savedSearches[index],
-          name: name.trim(),
+          name: trimmedName,
           conditions: JSON.parse(JSON.stringify(conditions)),
           updatedAt: Date.now(),
         }
@@ -96,14 +106,14 @@ export function useAdvancedSearch() {
         })
         // 更新原始条件，重置 dirty 状态
         setOriginalConditions(JSON.parse(JSON.stringify(conditions)))
-        return true
+        return { success: true }
       }
     }
 
     // 2. 否则新建
     const newSavedSearch = {
       id: generateSavedSearchId(),
-      name: name.trim(),
+      name: trimmedName,
       conditions: JSON.parse(JSON.stringify(conditions)), // 深拷贝
       createdAt: Date.now(),
     }
@@ -111,7 +121,7 @@ export function useAdvancedSearch() {
     setSavedSearches((prev) => [...prev, newSavedSearch])
     setActiveSearchId(newSavedSearch.id)
     setOriginalConditions(JSON.parse(JSON.stringify(conditions))) // 设置原始条件
-    return true
+    return { success: true }
   }, [conditions, hasActiveConditions, savedSearches])
 
   // 加载已保存的条件
