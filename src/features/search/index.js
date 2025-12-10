@@ -10,7 +10,7 @@ export { useAdvancedSearch } from './hooks/useAdvancedSearch'
 
 // 工具函数
 export { filterItems, calculateTotalQty } from './utils/filter'
-export { applyAdvancedFilter, hasValidConditions } from './utils/advancedFilter'
+export { applyAdvancedFilter, hasValidConditions, allConditionsHaveValue } from './utils/advancedFilter'
 
 // 常量配置
 export {

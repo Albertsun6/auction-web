@@ -95,6 +95,10 @@ function AdvancedSearch({
     const result = onSaveCurrentSearch?.(name.trim(), id)
     
     // 处理返回结果
+    if (result?.error === 'empty_value') {
+      message.warning('请填写所有条件的值')
+      return false
+    }
     if (result?.error === 'duplicate') {
       message.error('策略名称已存在，请使用其他名称')
       return false

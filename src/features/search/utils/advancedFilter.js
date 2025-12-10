@@ -89,13 +89,25 @@ export function applyAdvancedFilter(items, conditions) {
 }
 
 /**
- * 检查条件列表是否有有效条件
+ * 检查条件列表是否有有效条件（至少一个条件有值）
  * @param {Array} conditions - 条件列表
  * @returns {boolean}
  */
 export function hasValidConditions(conditions) {
   if (!conditions || !conditions.length) return false
   return conditions.some(
+    (cond) => cond.value !== '' && cond.value !== null && cond.value !== undefined
+  )
+}
+
+/**
+ * 检查所有条件是否都有值（用于保存前验证）
+ * @param {Array} conditions - 条件列表
+ * @returns {boolean}
+ */
+export function allConditionsHaveValue(conditions) {
+  if (!conditions || !conditions.length) return false
+  return conditions.every(
     (cond) => cond.value !== '' && cond.value !== null && cond.value !== undefined
   )
 }

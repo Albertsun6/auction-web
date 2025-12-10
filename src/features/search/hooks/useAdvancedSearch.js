@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo, useEffect } from 'react'
 import { createDefaultCondition } from '../constants/searchFields'
-import { hasValidConditions } from '../utils/advancedFilter'
+import { hasValidConditions, allConditionsHaveValue } from '../utils/advancedFilter'
 import { readSavedSearches, writeSavedSearches } from '../../../services/storageService'
 
 /**
@@ -80,6 +80,11 @@ export function useAdvancedSearch() {
     if (!name.trim() || !hasActiveConditions) return { success: false }
 
     const trimmedName = name.trim()
+    
+    // 空值检查：确保所有条件都有值
+    if (!allConditionsHaveValue(conditions)) {
+      return { success: false, error: 'empty_value' }
+    }
     
     // 重名检查：检查是否存在同名策略（排除当前编辑的策略）
     const isDuplicate = savedSearches.some(
