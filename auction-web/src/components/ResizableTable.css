@@ -1,0 +1,152 @@
+.resizable-table {
+  width: 100%;
+  overflow: hidden;
+}
+
+.resizable-table .ant-table {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.resizable-table .ant-table-container {
+  overflow-x: auto;
+}
+
+.resizable-table .ant-table-content {
+  overflow-x: auto !important;
+}
+
+.resizable-table .ant-table-thead > tr > th {
+  background: #f8fafc;
+  font-weight: 600;
+}
+
+.resizable-table .ant-table-tbody > tr:hover > td {
+  background: #f4f7fb !important;
+}
+
+.resizable-table .ant-table-cell {
+  vertical-align: middle !important;
+  border-right: none !important;
+}
+
+/* 选择框列居中对齐 */
+.resizable-table .ant-table-selection-column {
+  padding: 0 !important;
+}
+
+.resizable-table .ant-table-selection-column .ant-checkbox-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* 关注列 - 提高权重覆盖全局 padding */
+.resizable-table .ant-table-tbody > tr > td.follow-column,
+.resizable-table .ant-table-thead > tr > th.follow-column {
+  padding: 0 !important;
+}
+
+/* 确保所有单元格内容垂直居中 */
+.resizable-table .ant-table-tbody > tr > td {
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+}
+
+/* 移除表格列之间的分割线 */
+.resizable-table .ant-table-thead > tr > th {
+  border-right: none !important;
+}
+
+.resizable-table .ant-table-tbody > tr > td {
+  border-right: none !important;
+}
+
+/* 移除表格外边框，只保留顶部和底部 */
+.resizable-table .ant-table {
+  border: none;
+}
+
+.resizable-table .ant-table-thead > tr > th:first-child,
+.resizable-table .ant-table-tbody > tr > td:first-child {
+  border-left: none !important;
+}
+
+/* 已出价行样式 - 左侧绿色色条 */
+.resizable-table .ant-table-tbody > tr.row-bid > td {
+  background: #ffffff;
+  border-right: 0 !important;
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.resizable-table .ant-table-tbody > tr.row-bid > td:first-child {
+  border-left: 4px solid #10b981 !important;
+}
+
+.resizable-table .ant-table-tbody > tr.row-bid:hover > td {
+  background: #f9fafb !important;
+}
+
+/* 未出价行样式 - 无色条 */
+.resizable-table .ant-table-tbody > tr.row-no-bid > td {
+  background: #ffffff;
+  border-right: 0;
+  border-top: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.resizable-table .ant-table-tbody > tr.row-no-bid > td:first-child {
+  border-left: 4px solid transparent !important;
+}
+
+.resizable-table .ant-table-tbody > tr.row-no-bid:hover > td {
+  background: #f9fafb !important;
+}
+
+.ant-space-compact > .ant-input-number {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.ant-space-compact > .ant-btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+/* 固定列阴影效果 */
+.resizable-table .ant-table-cell-fix-left-last::after {
+  box-shadow: inset 10px 0 8px -8px rgba(0, 0, 0, 0.08);
+}
+
+.resizable-table .ant-table-cell-fix-right-first::after {
+  box-shadow: inset -10px 0 8px -8px rgba(0, 0, 0, 0.08);
+}
+
+/* Sticky 表头样式 */
+.resizable-table .ant-table-thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+/* 固定列背景色 */
+.resizable-table .ant-table-cell-fix-left,
+.resizable-table .ant-table-cell-fix-right {
+  background: #fff;
+}
+
+.resizable-table .ant-table-thead .ant-table-cell-fix-left,
+.resizable-table .ant-table-thead .ant-table-cell-fix-right {
+  background: #f8fafc;
+}
+
+/* 固定列 hover 效果 */
+.resizable-table .ant-table-tbody > tr:hover > .ant-table-cell-fix-left,
+.resizable-table .ant-table-tbody > tr:hover > .ant-table-cell-fix-right {
+  background: #f4f7fb !important;
+}
+

@@ -1,0 +1,308 @@
+.page {
+  min-height: 100vh;
+  background: #f5f7fa;
+  overflow-x: hidden;
+}
+
+.header {
+  padding: 0;
+  height: 64px;
+  line-height: 64px;
+}
+
+.page-loading {
+  padding: 48px;
+  text-align: center;
+  color: #0f6ad8;
+  font-weight: 600;
+}
+
+.content {
+  padding: 24px 32px 32px;
+  background: #eef1f5;
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+}
+
+.content-inner {
+  width: 100%;
+  max-width: 1600px;
+  min-width: 0;
+}
+
+.layout-body {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 16px;
+  align-items: start;
+}
+
+/* 响应式布局 */
+@media (max-width: 1200px) {
+  .content {
+    padding: 16px;
+  }
+  
+  .layout-body {
+    grid-template-columns: 200px 1fr;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 992px) {
+  .layout-body {
+    grid-template-columns: 1fr;
+  }
+  
+  .filter-panel {
+    position: static;
+  }
+  
+  .filter-options {
+    display: grid;
+    gap: 8px;
+  }
+  
+  .filter-option {
+    min-width: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .content {
+    padding: 12px 8px;
+  }
+  
+  .credit-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .supplier-logo-box {
+    align-self: flex-start;
+  }
+}
+
+.filter-panel {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  padding: 16px;
+  position: sticky;
+  top: 16px;
+}
+
+.filter-title {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  color: #6b7280;
+  margin-bottom: 12px;
+}
+
+.filter-group-title {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 14px;
+  color: #1f2937;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.filter-group-title .ant-typography {
+  margin: 0;
+  font-size: 14px;
+}
+
+.filter-options {
+  display: grid;
+  gap: 10px;
+}
+
+.filter-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 1.5px solid #e5e7eb;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.filter-option:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
+}
+
+.filter-option.active {
+  background: linear-gradient(135deg, #e8f1ff 0%, #d6e7ff 100%);
+  border-color: #0f6ad8;
+  color: #0f6ad8;
+  box-shadow: 0 2px 8px rgba(15, 106, 216, 0.15);
+  transform: translateY(-1px);
+}
+
+.filter-option.active:hover {
+  background: linear-gradient(135deg, #d6e7ff 0%, #c4ddff 100%);
+  box-shadow: 0 4px 12px rgba(15, 106, 216, 0.2);
+}
+
+.filter-option-label {
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+}
+
+.filter-option.active .filter-option-label {
+  color: #0f6ad8;
+}
+
+.filter-option-count {
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.filter-option.active .filter-option-count {
+  color: #0f6ad8;
+  font-weight: 600;
+}
+
+.filter-option-count::before {
+  content: '';
+  display: inline-block;
+  width: 1px;
+  height: 12px;
+  background: #d1d5db;
+  margin-right: 4px;
+}
+
+.filter-option.active .filter-option-count::before {
+  background: #0f6ad8;
+  opacity: 0.3;
+}
+
+.table-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  overflow: hidden;
+}
+.credit-row {
+  margin-bottom: 12px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.supplier-logo-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 8px 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.supplier-logo-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.supplier-logo-text {
+  font-weight: 700;
+  color: #1f2937;
+}
+
+/* 大屏适配 - 1920px+ */
+@media (min-width: 1920px) {
+  .content-inner {
+    max-width: 1800px;
+  }
+  
+  .layout-body {
+    grid-template-columns: 280px 1fr;
+    gap: 24px;
+  }
+  
+  .filter-panel {
+    padding: 20px;
+  }
+  
+  .filter-option {
+    padding: 14px 16px;
+  }
+}
+
+/* 超大屏适配 - 2560px+ (2K) */
+@media (min-width: 2560px) {
+  .content-inner {
+    max-width: 2200px;
+  }
+  
+  .layout-body {
+    grid-template-columns: 320px 1fr;
+    gap: 32px;
+  }
+  
+  .content {
+    padding: 32px 48px;
+  }
+  
+  .filter-panel {
+    padding: 24px;
+  }
+  
+  .filter-option {
+    padding: 16px 18px;
+  }
+  
+  .filter-options {
+    gap: 12px;
+  }
+}
+
+/* 已取消关注的行样式（只看关注模式下） */
+.row-unfollowed {
+  background-color: #fafafa !important;
+  opacity: 0.6;
+}
+
+.row-unfollowed td {
+  text-decoration: line-through;
+  color: #999 !important;
+}
+
+.row-unfollowed:hover {
+  background-color: #f5f5f5 !important;
+}
+
+/* 已取消关注行的关注按钮保持正常显示 */
+.row-unfollowed .ant-btn {
+  text-decoration: none;
+  opacity: 1;
+}
