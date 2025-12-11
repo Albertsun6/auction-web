@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { Layout, Typography, Space, Tag, Button, InputNumber, Divider, Card, Descriptions, message } from 'antd'
+import { Layout, Typography, Space, Tag, Button, InputNumber, Divider, Card, Descriptions, message, Table } from 'antd'
 import { ArrowLeftOutlined } from '@ant-design/icons'
 import PageHeader from '../components/PageHeader'
 import { DEFAULT_ITEMS, STORAGE_KEYS } from '../constants'
@@ -32,6 +32,49 @@ export default function DetailPage() {
       currentBid: formatBidValue(merged.currentBid),
     }
   }, [id, bidRecords])
+
+  // 生成模拟的 items 子项目数据
+  const itemsList = useMemo(() => {
+    if (!item) return []
+    // 根据商品 qty 数量生成对应数量的子项目
+    return Array.from({ length: item.qty }, (_, idx) => ({
+      key: idx + 1,
+      id: `${item.lotNo}-ITEM-${String(idx + 1).padStart(2, '0')}`,
+      sku: `SKU-${item.brand?.substring(0, 3).toUpperCase() || 'UNK'}-${String(item.id).padStart(4, '0')}-${String(idx + 1).padStart(2, '0')}`,
+      quantity: 1,
+      referencePrice: `HK$${(Math.floor(Math.random() * 500) + 100).toLocaleString()}`,
+    }))
+  }, [item])
+
+  // Items 列表表格列配置
+  const itemsColumns = [
+    {
+      title: '编号',
+      dataIndex: 'id',
+      key: 'id',
+      width: 180,
+    },
+    {
+      title: 'SKU',
+      dataIndex: 'sku',
+      key: 'sku',
+      width: 200,
+    },
+    {
+      title: '数量',
+      dataIndex: 'quantity',
+      key: 'quantity',
+      width: 80,
+      align: 'center',
+    },
+    {
+      title: '参考价格',
+      dataIndex: 'referencePrice',
+      key: 'referencePrice',
+      width: 120,
+      align: 'right',
+    },
+  ]
 
   const hasBid = item ? isBidValue(item.currentBid) : false
 
@@ -224,6 +267,18 @@ export default function DetailPage() {
               </Space>
             </Card>
           </div>
+
+          {/* Items 列表 */}
+          <Card className="detail-card items-card" title={`商品明细 (${itemsList.length} 件)`} style={{ marginTop: 24 }}>
+            <Table
+              columns={itemsColumns}
+              dataSource={itemsList}
+              pagination={false}
+              size="middle"
+              bordered
+              scroll={{ x: 'max-content' }}
+            />
+          </Card>
         </div>
       </Content>
     </Layout>
